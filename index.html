@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mukesh — UI/UX Designer & Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+/* ── BASE ── */
+:root{
+  --bg:#f9f9f7;
+  --white:#ffffff;
+  --surface:#f2f2ef;
+  --border:#e4e4de;
+  --border-strong:#c8c8be;
+  --ink:#181814;
+  --ink2:#38382e;
+  --muted:#848478;
+  --accent:#1a3fcb;
+  --accent-light:#dfe6fc;
+  --accent2:#6952c8;
+  --accent2-light:#ede9fc;
+  --green:#0f7a40;
+  --green-light:#d4f0e2;
+  --orange:#c44a08;
+  --orange-light:#fce6d4;
+  --violet:#6b28d4;
+  --violet-light:#ecdffe;
+  --radius:4px;
+}
+
+body{
+  background:var(--bg);
+  color:var(--ink2);
+  font-family:'Lato',sans-serif;
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── CURSOR ── */
+.cursor{width:8px;height:8px;border-radius:50%;background:var(--accent);position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:background .3s;}
+.cursor-ring{width:30px;height:30px;border:1.5px solid var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;opacity:.35;transition:all .18s ease,border-color .3s;}
+
+/* ── UTILITY ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:none;}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes expand{from{width:0;}to{width:var(--w);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+/* ══════════════════════════════════════════
+   SECTION: PORTFOLIO (HOME PAGE)
+══════════════════════════════════════════ */
+#page-portfolio{display:block;}
+#page-cases{display:none;}
+
+/* ── NAV ── */
+.p-nav{
+  position:fixed;top:0;left:0;right:0;z-index:600;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 56px;
+  border-bottom:1px solid transparent;
+  transition:border-color .3s,background .3s;
+}
+.p-nav.scrolled{border-color:var(--border);background:rgba(249,249,247,.94);backdrop-filter:blur(16px);}
+.p-nav-logo{font-family:'Playfair Display',serif;font-weight:700;font-size:22px;color:var(--ink);letter-spacing:-.02em;cursor:none;}
+.p-nav-logo span{color:var(--accent);}
+.p-nav-links{display:flex;gap:36px;align-items:center;}
+.p-nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.04em;transition:color .2s;cursor:none;}
+.p-nav-links a:hover{color:var(--accent);}
+.p-nav-links .nav-cta{background:var(--accent);color:#fff;padding:9px 22px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.p-nav-links .nav-cta:hover{background:var(--accent2);color:#fff;}
+
+/* ── HERO ── */
+.p-hero{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;padding:110px 56px 72px;
+  position:relative;overflow:hidden;background:var(--white);
+  border-bottom:1px solid var(--border);
+}
+.p-hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:64px 64px;opacity:.3;pointer-events:none;}
+.p-hero-label{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.p-hero-label::before{content:'';width:24px;height:2px;background:var(--accent);display:block;}
+.p-hero h1{font-family:'Playfair Display',serif;font-size:clamp(52px,6.5vw,96px);font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--ink);margin-bottom:28px;}
+.p-hero h1 em{font-style:italic;color:var(--accent);}
+.p-hero-desc{color:var(--muted);font-size:15px;line-height:1.8;max-width:380px;margin-bottom:40px;font-weight:400;}
+.p-hero-cta{display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.btn-solid{background:var(--accent);color:#fff;padding:13px 30px;font-family:'Lato',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;display:inline-block;transition:all .2s;cursor:none;border:2px solid var(--accent);}
+.btn-solid:hover{background:var(--accent2);border-color:var(--accent2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(26,63,203,.2);}
+.btn-ghost{color:var(--ink);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border:2px solid var(--border-strong);padding:13px 30px;display:inline-block;transition:all .2s;cursor:none;}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+.p-hero-right{display:flex;justify-content:flex-end;align-items:center;position:relative;}
+.p-hero-visual{width:420px;height:500px;position:relative;}
+.h-card{position:absolute;background:var(--white);border:1px solid var(--border);padding:24px;box-shadow:0 4px 24px rgba(0,0,0,.06);animation:float 6s ease-in-out infinite;}
+.h-card:nth-child(1){top:0;right:0;width:295px;animation-delay:0s;}
+.h-card:nth-child(2){top:170px;left:0;width:255px;animation-delay:-2s;}
+.h-card:nth-child(3){bottom:0;right:30px;width:275px;animation-delay:-4s;}
+.h-card-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.h-card-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:5px;}
+.h-card-sub{font-size:12px;color:var(--muted);line-height:1.5;}
+.h-card-bar{margin-top:12px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.h-card-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));animation:expand 2s ease forwards;}
+.p-hero-stats{position:absolute;bottom:64px;left:56px;display:flex;gap:44px;}
+.stat-val{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:var(--ink);line-height:1;}
+.stat-val span{color:var(--accent);}
+.stat-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+
+/* ── ABOUT ── */
+.p-about{padding:88px 56px;border-bottom:1px solid var(--border);background:var(--white);}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.sec-label::before{content:'';width:20px;height:2px;background:var(--accent);}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,54px);font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:14px;}
+.sec-title em{font-style:italic;color:var(--accent);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;margin-top:56px;align-items:start;}
+.about-text p{color:var(--muted);line-height:1.85;margin-bottom:18px;font-size:15px;}
+.about-text p strong{color:var(--ink2);font-weight:700;}
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);}
+.skill-card{background:var(--white);padding:22px;transition:background .2s;}
+.skill-card:hover{background:var(--accent-light);}
+.skill-card-name{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:4px;}
+.skill-card-desc{font-size:12px;color:var(--muted);}
+
+/* ── PROCESS ── */
+.p-process{padding:88px 56px;background:var(--surface);border-bottom:1px solid var(--border);}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:56px;}
+.proc-step{background:var(--white);padding:36px 28px;position:relative;overflow:hidden;transition:background .25s;}
+.proc-step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:transform .3s;}
+.proc-step:hover{background:var(--accent-light);}
+.proc-step:hover::after{transform:scaleX(1);}
+.proc-num{font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:var(--border);line-height:1;margin-bottom:20px;transition:color .3s;}
+.proc-step:hover .proc-num{color:rgba(26,63,203,.15);}
+.proc-title{font-weight:700;font-size:15px;color:var(--ink);margin-bottom:8px;}
+.proc-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* ── PROJECTS ── */
+.p-projects{padding:88px 56px;border-bottom:1px solid var(--border);background:var(--white);}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:56px;}
+.proj-card{background:var(--white);padding:36px 32px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;transition:background .2s;cursor:none;}
+.proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:transform .35s;}
+.proj-card:hover{background:var(--surface);}
+.proj-card:hover::before{transform:scaleX(1);}
+.proj-num{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--muted);}
+.proj-icon{width:48px;height:48px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--surface);transition:all .2s;}
+.proj-card:hover .proj-icon{border-color:var(--accent);background:var(--accent-light);}
+.proj-type{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);}
+.proj-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--ink);line-height:1.2;}
+.proj-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+.proj-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;}
+.p-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:3px 9px;background:var(--surface);transition:all .2s;}
+.proj-card:hover .p-tag{border-color:var(--border-strong);color:var(--ink2);}
+.proj-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.proj-btn{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:8px 16px;display:inline-block;transition:all .2s;cursor:none;}
+.proj-btn.solid{background:var(--accent);color:#fff;}
+.proj-btn.solid:hover{background:var(--accent2);}
+.proj-btn.outline{border:1px solid var(--border-strong);color:var(--muted);}
+.proj-btn.outline:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── PROTOTYPES ── */
+.p-protos{padding:88px 56px;background:var(--surface);border-bottom:1px solid var(--border);}
+.proto-tabs{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:48px;}
+.proto-tab{flex:1;padding:14px 20px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;background:var(--white);color:var(--muted);}
+.proto-tab.active{background:var(--accent);color:#fff;}
+.proto-panel{display:none;background:var(--white);border:1px solid var(--border);border-top:none;}
+.proto-panel.active{display:block;}
+.proto-hdr{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:var(--surface);}
+.proto-hdr-title{font-weight:700;font-size:13px;color:var(--ink);}
+.proto-hdr-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.proto-live-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;display:inline-block;margin-right:8px;}
+.proto-link{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:8px 16px;border:1px solid var(--border-strong);color:var(--ink2);transition:all .2s;cursor:none;display:inline-flex;align-items:center;gap:6px;}
+.proto-link:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+.proto-frame{position:relative;width:100%;padding-bottom:56.25%;background:var(--surface);}
+.proto-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+
+/* ── QUOTE BAND ── */
+.p-quote{padding:88px 56px;background:var(--ink);display:flex;align-items:center;justify-content:center;}
+.p-quote-inner{max-width:780px;text-align:center;}
+.p-quote-mark{font-family:'Playfair Display',serif;font-size:100px;line-height:.5;color:rgba(255,255,255,.1);display:block;margin-bottom:20px;}
+.p-quote-text{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,38px);font-weight:400;font-style:italic;color:#fff;line-height:1.35;}
+.p-quote-author{margin-top:28px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+
+/* ── CONTACT ── */
+.p-contact{padding:88px 56px;border-bottom:1px solid var(--border);background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
+.contact-links{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);}
+.c-link{background:var(--white);padding:20px 26px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--ink2);transition:background .2s;cursor:none;}
+.c-link:hover{background:var(--accent-light);}
+.c-link-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.c-link-val{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--ink);margin-top:2px;}
+.c-link-arr{color:var(--accent);font-size:18px;transition:transform .2s;}
+.c-link:hover .c-link-arr{transform:translateX(4px);}
+
+/* ── FOOTER ── */
+.p-footer{padding:24px 56px;background:var(--surface);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:400;}
+
+/* ══════════════════════════════════════════
+   SECTION: CASE STUDIES
+══════════════════════════════════════════ */
+.cs-wrap{display:flex;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.cs-sidebar{
+  position:fixed;top:0;left:0;bottom:0;width:272px;
+  background:var(--white);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;z-index:500;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.cs-sidebar-head{padding:22px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.cs-home-btn{font-family:'Playfair Display',serif;font-weight:700;font-size:18px;color:var(--ink);cursor:none;border:none;background:none;letter-spacing:-.02em;}
+.cs-home-btn span{color:var(--accent);}
+.cs-back{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:none;background:none;cursor:none;transition:color .2s;}
+.cs-back:hover{color:var(--accent);}
+.cs-sidebar-lbl{padding:18px 24px 8px;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--border-strong);}
+.cs-tab{display:flex;align-items:center;gap:12px;padding:13px 24px;cursor:none;transition:background .2s;border:none;background:transparent;text-align:left;width:100%;border-left:3px solid transparent;}
+.cs-tab:hover{background:var(--surface);}
+.cs-tab.active{background:var(--accent-light);border-left-color:var(--accent);}
+.cs-tab-icon{width:30px;height:30px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:14px;background:var(--surface);border:1px solid var(--border);flex-shrink:0;transition:all .2s;}
+.cs-tab.active .cs-tab-icon{background:var(--accent);border-color:var(--accent);}
+.cs-tab-num{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+.cs-tab-name{font-weight:700;font-size:13px;color:var(--ink);line-height:1.2;margin-top:1px;}
+.cs-tab-type{font-size:11px;color:var(--muted);margin-top:1px;}
+.cs-tab.active .cs-tab-name{color:var(--accent);}
+.cs-sidebar-div{height:1px;background:var(--border);margin:10px 0;}
+.cs-toc{padding:0 24px 20px;flex:1;overflow-y:auto;}
+.cs-toc-lbl{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--border-strong);margin-bottom:8px;margin-top:4px;}
+.cs-toc-a{display:block;font-size:12px;color:var(--muted);text-decoration:none;padding:5px 0 5px 12px;border-left:2px solid transparent;transition:all .2s;cursor:none;font-weight:400;}
+.cs-toc-a:hover,.cs-toc-a.active{color:var(--accent);border-left-color:var(--accent);}
+.cs-sidebar-foot{padding:16px 24px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);}
+
+/* ── CS MAIN ── */
+.cs-main{margin-left:272px;flex:1;}
+.cs-topbar{position:sticky;top:0;z-index:400;display:flex;align-items:center;justify-content:space-between;padding:12px 40px;background:rgba(249,249,247,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.cs-breadcrumb{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;font-weight:400;}
+.cs-breadcrumb strong{color:var(--accent);font-weight:700;}
+.cs-topbar-btns{display:flex;gap:8px;}
+.tb-btn{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:7px 16px;cursor:none;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border-strong);color:var(--ink2);background:var(--white);}
+.tb-btn:hover,.tb-btn.prim{background:var(--accent);color:#fff;border-color:var(--accent);}
+.tb-btn.prim:hover{background:var(--accent2);border-color:var(--accent2);}
+
+/* ── CS PANELS ── */
+.cs-panel{display:none;animation:fadeIn .35s ease;}
+.cs-panel.active{display:block;}
+
+/* ── CS HERO ── */
+.cs-hero{padding:48px 40px 56px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;background:var(--white);position:relative;overflow:hidden;}
+.cs-hero-wm{font-family:'Playfair Display',serif;font-size:180px;font-weight:700;position:absolute;right:-10px;bottom:-30px;opacity:.04;pointer-events:none;user-select:none;line-height:1;color:var(--accent);}
+.cs-hero-tag{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.cs-hero-tag::before{content:'';width:16px;height:2px;background:var(--border-strong);display:block;}
+.cs-hero h1{font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,64px);font-weight:700;line-height:1;color:var(--ink);letter-spacing:-.02em;}
+.cs-hero h1 em{font-style:italic;color:var(--accent);}
+.cs-hero-desc{color:var(--muted);font-size:14px;line-height:1.8;margin-top:18px;font-weight:400;}
+.cs-meta{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:24px;}
+.cs-meta-cell{background:var(--surface);padding:16px 18px;}
+.cs-meta-lbl{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.cs-meta-val{font-weight:700;font-size:12px;color:var(--ink);}
+.cs-meta-val a{color:var(--accent);font-size:11px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--border-strong);}
+
+/* ── CS BODY ── */
+.cs-body{max-width:800px;margin:0 auto;padding:48px 40px 72px;}
+.cs-sec{margin-bottom:60px;}
+.cs-sec-lbl{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.cs-sec-lbl::before{content:'';width:14px;height:2px;background:var(--border-strong);display:block;}
+.cs-sec h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,38px);font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:18px;}
+.cs-sec h2 em{font-style:italic;color:var(--accent);}
+.cs-sec p{color:var(--muted);line-height:1.85;font-size:14px;margin-bottom:14px;}
+.cs-sec p strong{color:var(--ink2);font-weight:700;}
+.cs-quote{border-left:3px solid var(--accent);padding:18px 24px;background:var(--accent-light);margin:24px 0;border-radius:0 var(--radius) var(--radius) 0;}
+.cs-quote p{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;font-style:italic;color:var(--ink);line-height:1.4;margin:0;}
+
+/* ── STAT GRID ── */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:24px;}
+.stat-card{background:var(--white);padding:26px 22px;}
+.stat-big{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:var(--accent);line-height:1;margin-bottom:6px;}
+.stat-desc{font-size:12px;color:var(--muted);line-height:1.55;}
+
+/* ── PHASE LIST ── */
+.phase-list{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:24px;}
+.phase-row{background:var(--white);padding:22px 26px;display:grid;grid-template-columns:36px 1fr;gap:16px;align-items:start;transition:background .2s;}
+.phase-row:hover{background:var(--surface);}
+.phase-badge{width:32px;height:32px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--accent);background:var(--surface);flex-shrink:0;margin-top:1px;}
+.phase-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:4px;}
+.phase-desc{font-size:12px;color:var(--muted);line-height:1.65;}
+
+/* ── OUTCOME GRID ── */
+.out-grid,.dec-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:24px;}
+.out-card,.dec-card{background:var(--white);padding:26px 22px;transition:background .2s;}
+.out-card:hover,.dec-card:hover{background:var(--surface);}
+.out-icon{font-size:22px;margin-bottom:10px;}
+.out-title,.dec-title{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:5px;}
+.out-text,.dec-text{font-size:12px;color:var(--muted);line-height:1.65;}
+.dec-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.cs-badge{display:inline-block;margin-top:8px;padding:3px 9px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--accent-light);color:var(--accent);}
+
+/* ── FLOW STEPS ── */
+.flow-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:24px;}
+.flow-step{background:var(--white);padding:24px 18px;position:relative;overflow:hidden;transition:background .25s;}
+.flow-step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .3s;}
+.flow-step:hover{background:var(--accent-light);}
+.flow-step:hover::after{transform:scaleX(1);}
+.flow-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--border);line-height:1;margin-bottom:12px;transition:color .3s;}
+.flow-step:hover .flow-num{color:rgba(26,63,203,.12);}
+.flow-title{font-weight:700;font-size:12px;color:var(--ink);margin-bottom:4px;}
+.flow-desc{font-size:11px;color:var(--muted);line-height:1.6;}
+
+/* ── TRUST GRID ── */
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:24px;}
+.trust-card{background:var(--white);padding:22px 20px;text-align:center;transition:background .2s;}
+.trust-card:hover{background:var(--surface);}
+.trust-icon{font-size:22px;margin-bottom:8px;}
+.trust-title{font-weight:700;font-size:12px;color:var(--ink);margin-bottom:4px;}
+.trust-text{font-size:11px;color:var(--muted);line-height:1.55;}
+
+/* ── FIGMA EMBED ── */
+.fig-wrap{margin:48px 0;}
+.fig-hdr{padding:14px 22px;border:1px solid var(--border);border-bottom:none;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--surface);}
+.fig-hdr-title{font-weight:700;font-size:12px;color:var(--ink);}
+.fig-live{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;display:inline-block;margin-right:7px;}
+.fig-btn{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:7px 14px;border:1px solid var(--border-strong);color:var(--ink2);background:var(--white);display:inline-flex;align-items:center;gap:5px;transition:all .2s;cursor:none;}
+.fig-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+.fig-frame{position:relative;width:100%;padding-bottom:58%;background:var(--surface);border:1px solid var(--border);}
+.fig-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+
+/* ── CS FOOTER ── */
+.cs-footer{padding:30px 40px;border-top:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+.cs-footer-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.cs-footer-btns{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ── PHONE MOCKUPS ── */
+.phone-row{display:flex;justify-content:center;align-items:flex-end;gap:14px;margin-top:24px;}
+.ph{width:118px;height:224px;border:2px solid var(--border-strong);border-radius:18px;background:linear-gradient(160deg,var(--accent-light),var(--accent2-light));position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.07);flex-shrink:0;}
+.ph.tall{height:260px;transform:translateY(-18px);}
+.ph-top{height:16px;background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;}
+.ph-notch{width:36px;height:7px;background:var(--border-strong);border-radius:4px;}
+.ph-body{padding:9px;display:flex;flex-direction:column;gap:6px;}
+.ph-bar{height:6px;border-radius:3px;background:rgba(26,63,203,.12);}
+.ph-bar.a{background:linear-gradient(90deg,var(--accent),var(--accent2));width:68%;}
+.ph-bar.s{width:48%;}
+.ph-card{background:rgba(255,255,255,.7);border-radius:7px;padding:7px;}
+.ph-row{height:5px;border-radius:2px;background:rgba(0,0,0,.07);margin-bottom:4px;}
+.ph-row.a{background:linear-gradient(90deg,var(--accent),var(--accent2));width:58%;}
+.ph-nav{position:absolute;bottom:0;left:0;right:0;height:30px;background:rgba(255,255,255,.82);display:flex;align-items:center;justify-content:space-around;padding:0 10px;}
+.ph-dot{width:16px;height:3px;border-radius:2px;background:var(--border);}
+.ph-dot.active{background:var(--accent);}
+
+/* ── PAY VISUAL ── */
+.pay-vis{display:flex;flex-direction:column;gap:12px;}
+.pay-card{background:var(--white);border:1px solid var(--border);padding:18px 22px;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.05);}
+.pay-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--orange),#e8722e);}
+.pay-lbl{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.pay-amount{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--orange);line-height:1;}
+.pay-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+.pay-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.pay-st{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.pay-green{width:5px;height:5px;border-radius:50%;background:#22c55e;}
+.step-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.chip{padding:3px 9px;border:1px solid var(--border);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface);}
+.chip.act{background:var(--orange);color:#fff;border-color:var(--orange);}
+.prog{height:3px;background:var(--border);border-radius:2px;margin-top:7px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--orange),#e8722e);border-radius:2px;width:75%;}
+.fee-row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px;}
+.fee-row span:first-child{color:var(--muted);}
+.fee-row span:last-child{font-weight:700;color:var(--ink);}
+.fee-row.tot span:last-child{color:var(--orange);}
+.fee-div{height:1px;background:var(--border);margin:7px 0;}
+
+/* ── TRADING VISUAL ── */
+.trade-vis{display:flex;flex-direction:column;gap:12px;}
+.trade-card{background:var(--white);border:1px solid var(--border);padding:18px 22px;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.05);}
+.trade-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet),#9d5cf5);}
+.trade-lbl{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.trade-val{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--violet);line-height:1;}
+.trade-bars{display:flex;align-items:flex-end;gap:3px;height:44px;margin:8px 0;}
+.tb{flex:1;background:var(--violet-light);border-radius:2px 2px 0 0;}
+.tb.hi{background:var(--violet);}
+.trade-order-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:8px 0;}
+.to-btn{padding:7px;text-align:center;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.to-btn.buy{background:var(--violet);color:#fff;}
+.to-btn.sell{background:var(--white);color:var(--muted);}
+.greek-row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;}
+.greek-lbl{color:var(--muted);font-size:10px;}
+.greek-val{font-weight:700;}
+.greek-val.pos{color:#22c55e;}
+.greek-val.neg{color:#ef4444;}
+.greek-val.neu{color:var(--violet);}
+
+/* ── MOBILE / RESPONSIVE ── */
+.cs-ham{display:none;position:fixed;top:12px;left:12px;z-index:700;background:var(--white);border:1px solid var(--border);padding:9px;cursor:none;}
+.cs-ham span{display:block;width:16px;height:2px;background:var(--ink);margin:3px 0;}
+@media(max-width:960px){
+  .cs-sidebar{transform:translateX(-100%);}
+  .cs-sidebar.open{transform:none;}
+  .cs-main{margin-left:0;}
+  .cs-ham{display:block;}
+  .cs-hero{grid-template-columns:1fr;padding:32px 24px 40px;}
+  .cs-hero-wm{display:none;}
+  .cs-body{padding:32px 24px 56px;}
+  .stat-grid,.flow-grid,.trust-grid{grid-template-columns:1fr 1fr;}
+  .out-grid,.dec-grid{grid-template-columns:1fr;}
+  .cs-footer{padding:22px 24px;}
+  .cs-topbar{padding:10px 24px;}
+}
+@media(max-width:900px){
+  .p-nav{padding:16px 24px;}
+  .p-nav-links{display:none;}
+  .p-hero{grid-template-columns:1fr;padding:100px 24px 64px;}
+  .p-hero-right{display:none;}
+  .p-hero-stats{left:24px;gap:28px;}
+  .p-about,.p-process,.p-projects,.p-protos,.p-contact{padding:64px 24px;}
+  .p-quote{padding:64px 24px;}
+  .about-grid{grid-template-columns:1fr;gap:40px;}
+  .process-grid{grid-template-columns:1fr 1fr;}
+  .proj-grid{grid-template-columns:1fr;}
+  .p-contact{grid-template-columns:1fr;gap:40px;}
+  .p-footer{flex-direction:column;gap:8px;text-align:center;padding:20px 24px;}
+  .proto-tabs{flex-wrap:wrap;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ═══════════ PAGE: PORTFOLIO ═══════════ -->
+<div id="page-portfolio">
+
+  <nav class="p-nav" id="pnav">
+    <div class="p-nav-logo">M<span>.</span></div>
+    <div class="p-nav-links">
+      <a href="#about">About</a>
+      <a href="#process">Process</a>
+      <a href="#work">Work</a>
+      <a href="#prototypes">Prototypes</a>
+      <a href="#contact">Contact</a>
+      <a href="#" class="nav-cta" onclick="showCases(event)">Case Studies</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="p-hero" id="home">
+    <div class="p-hero-grid"></div>
+    <div id="hero-content">
+      <div class="p-hero-label" style="opacity:0;animation:slideUp .7s ease .15s forwards;">UI / UX Designer</div>
+      <h1 style="opacity:0;animation:slideUp .7s ease .3s forwards;">Mukesh<br><em>Designs</em><br>That Work</h1>
+      <p class="p-hero-desc" style="opacity:0;animation:slideUp .7s ease .45s forwards;">7+ years crafting user-centered products across web and mobile — from e-commerce to enterprise dashboards. Turning complexity into clarity.</p>
+      <div class="p-hero-cta" style="opacity:0;animation:slideUp .7s ease .6s forwards;">
+        <a href="#work" class="btn-solid">View Work</a>
+        <a href="#" onclick="showCases(event)" class="btn-ghost">Case Studies →</a>
+      </div>
+    </div>
+    <div class="p-hero-right" style="opacity:0;animation:fadeIn 1s ease .5s forwards;">
+      <div class="p-hero-visual">
+        <div class="h-card"><div class="h-card-tag">E-commerce</div><div class="h-card-title">Checkout Redesign</div><div class="h-card-sub">Reduced drop-off by 34% through streamlined flow</div><div class="h-card-bar"><div class="h-card-fill" style="--w:78%"></div></div></div>
+        <div class="h-card"><div class="h-card-tag">Dashboard</div><div class="h-card-title">Analytics Platform</div><div class="h-card-sub">Enterprise-grade data visualization</div><div class="h-card-bar"><div class="h-card-fill" style="--w:92%"></div></div></div>
+        <div class="h-card"><div class="h-card-tag">Mobile App</div><div class="h-card-title">FinTech Wallet</div><div class="h-card-sub">4.8★ App Store · 200K+ users</div><div class="h-card-bar"><div class="h-card-fill" style="--w:95%"></div></div></div>
+      </div>
+    </div>
+    <div class="p-hero-stats">
+      <div><div class="stat-val">7<span>+</span></div><div class="stat-lbl">Years Exp.</div></div>
+      <div><div class="stat-val">40<span>+</span></div><div class="stat-lbl">Projects</div></div>
+      <div><div class="stat-val">12<span>+</span></div><div class="stat-lbl">Industries</div></div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="p-about" id="about">
+    <div class="sec-label">About</div>
+    <div class="sec-title">Design thinking meets <em>real users</em></div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>Hi, I'm <strong>Mukesh</strong> — a UI/UX designer with over <strong>7 years of experience</strong> designing user-centered products across web and mobile platforms.</p>
+        <p>I've worked on projects ranging from <strong>e-commerce to enterprise dashboards</strong>, focusing on creating intuitive interfaces and seamless user journeys that serve real people in real contexts.</p>
+        <p>My approach is rooted in <strong>design thinking</strong> — turning complex requirements into simple, meaningful experiences that just work.</p>
+      </div>
+      <div class="skills-grid reveal">
+        <div class="skill-card"><div class="skill-card-name">User Research</div><div class="skill-card-desc">Interviews, surveys, usability testing</div></div>
+        <div class="skill-card"><div class="skill-card-name">Interaction Design</div><div class="skill-card-desc">Flows, prototypes, microinteractions</div></div>
+        <div class="skill-card"><div class="skill-card-name">Visual Design</div><div class="skill-card-desc">Systems, typography, color theory</div></div>
+        <div class="skill-card"><div class="skill-card-name">Figma / Prototyping</div><div class="skill-card-desc">Hi-fi mockups, interactive prototypes</div></div>
+        <div class="skill-card"><div class="skill-card-name">Design Systems</div><div class="skill-card-desc">Scalable, component-based libraries</div></div>
+        <div class="skill-card"><div class="skill-card-name">Dev Handoff</div><div class="skill-card-desc">Specs, tokens, cross-team alignment</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <div class="p-process" id="process">
+    <div class="sec-label">Process</div>
+    <div class="sec-title">How I solve <em>design problems</em></div>
+    <div class="process-grid">
+      <div class="proc-step reveal"><div class="proc-num">01</div><div class="proc-title">Discover</div><div class="proc-desc">Deep-dive into user research, stakeholder interviews, and competitive analysis to uncover real problems worth solving.</div></div>
+      <div class="proc-step reveal"><div class="proc-num">02</div><div class="proc-title">Define</div><div class="proc-desc">Synthesize findings into clear problem statements, personas, and user journey maps that guide every decision forward.</div></div>
+      <div class="proc-step reveal"><div class="proc-num">03</div><div class="proc-title">Design</div><div class="proc-desc">Ideate through sketches, wireframes, and high-fidelity prototypes — iterating fast and close to the user's mental model.</div></div>
+      <div class="proc-step reveal"><div class="proc-num">04</div><div class="proc-title">Deliver</div><div class="proc-desc">Validate through usability testing, refine based on evidence, and hand off pixel-perfect specs to engineering teams.</div></div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="p-projects" id="work">
+    <div class="sec-label">Selected Work</div>
+    <div class="sec-title">Projects that <em>moved the needle</em></div>
+    <div class="proj-grid">
+      <div class="proj-card reveal">
+        <div class="proj-num">001</div><div class="proj-icon">📄</div>
+        <div class="proj-type">GDOC · Document Design</div>
+        <div class="proj-name">GDOC Design Project</div>
+        <div class="proj-desc">End-to-end UX from problem discovery through hi-fi Figma prototype — transforming complex document workflows into effortless experiences.</div>
+        <div class="proj-tags"><span class="p-tag">Figma</span><span class="p-tag">UX Research</span><span class="p-tag">Case Study</span></div>
+        <div class="proj-btns">
+          <a href="#" onclick="showCases(event,'gdoc')" class="proj-btn solid">Case Study →</a>
+          <a href="https://www.figma.com/proto/t2hRFTkc3egL7vrvxReXhy/GDOC?node-id=170-6925&page-id=170%3A506&starting-point-node-id=170%3A7858&t=xhmzpv7cStGr5jIR-1" target="_blank" class="proj-btn outline">Figma ↗</a>
+        </div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-num">002</div><div class="proj-icon">📱</div>
+        <div class="proj-type">Mobile UI Design</div>
+        <div class="proj-name">Mini Mobile App</div>
+        <div class="proj-desc">Fully interactive mobile app — intuitive navigation, clean visual hierarchy, and micro-interactions that feel natural on touch screens.</div>
+        <div class="proj-tags"><span class="p-tag">Mobile UI</span><span class="p-tag">iOS/Android</span><span class="p-tag">Case Study</span></div>
+        <div class="proj-btns">
+          <a href="#" onclick="showCases(event,'app')" class="proj-btn solid">Case Study →</a>
+          <a href="https://www.figma.com/proto/EmwgYgscwDC6JAPLzb3zZg/Mini_Mobile-App?node-id=665-5243&starting-point-node-id=533%3A13484&t=v0IG6WMroBq7bgYd-1" target="_blank" class="proj-btn outline">Figma ↗</a>
+        </div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-num">003</div><div class="proj-icon">💰</div>
+        <div class="proj-type">FinTech · Payment UX</div>
+        <div class="proj-name">Tools Payment Design</div>
+        <div class="proj-desc">Payment tools UI built around user trust — transparent fee flows, real-time status, and a visual language that signals reliability at every step.</div>
+        <div class="proj-tags"><span class="p-tag">FinTech</span><span class="p-tag">Payments</span><span class="p-tag">Case Study</span></div>
+        <div class="proj-btns">
+          <a href="#" onclick="showCases(event,'payment')" class="proj-btn solid">Case Study →</a>
+          <a href="https://www.figma.com/proto/XAFc9Wo9mxrwzRf7t27lfm/Tools_payment?node-id=6-8914&t=yGeR4O34ztjquJaw-1&scaling=min-zoom&content-scaling=fixed&page-id=4%3A2&starting-point-node-id=6%3A8914" target="_blank" class="proj-btn outline">Figma ↗</a>
+        </div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-num">004</div><div class="proj-icon">📈</div>
+        <div class="proj-type">Web · Trading Platform</div>
+        <div class="proj-name">Options Trading Platform</div>
+        <div class="proj-desc">Professional-grade options trading website — complex financial data made scannable, fast-action order flows designed for traders under pressure.</div>
+        <div class="proj-tags"><span class="p-tag">FinTech</span><span class="p-tag">Web</span><span class="p-tag">Case Study</span></div>
+        <div class="proj-btns">
+          <a href="#" onclick="showCases(event,'trading')" class="proj-btn solid">Case Study →</a>
+          <a href="https://www.figma.com/proto/z3a1746joln40JYFKJ9Mon/UI-files-portfolio?node-id=7071-276&t=UbxBeAc8ZHm87rhz-1&scaling=min-zoom&content-scaling=fixed&page-id=6994%3A764&starting-point-node-id=7071%3A276&show-proto-sidebar=1" target="_blank" class="proj-btn outline">Figma ↗</a>
+        </div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-num">005</div><div class="proj-icon">🏥</div>
+        <div class="proj-type">HealthTech</div>
+        <div class="proj-name">MedTrack Portal</div>
+        <div class="proj-desc">Patient-facing health monitoring platform with accessible, anxiety-reducing interfaces for users managing chronic conditions.</div>
+        <div class="proj-tags"><span class="p-tag">Accessibility</span><span class="p-tag">Healthcare</span><span class="p-tag">Web</span></div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-num">006</div><div class="proj-icon">🚚</div>
+        <div class="proj-type">Logistics</div>
+        <div class="proj-name">FleetOps Platform</div>
+        <div class="proj-desc">Ops-heavy tool for fleet managers tracking 10,000+ vehicles. Designed for power users under pressure — speed, density, and clarity above all.</div>
+        <div class="proj-tags"><span class="p-tag">Complex UX</span><span class="p-tag">Maps</span><span class="p-tag">Enterprise</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROTOTYPES -->
+  <div class="p-protos" id="prototypes">
+    <div class="sec-label">Live Prototypes</div>
+    <div class="sec-title">Interact with the <em>real designs</em></div>
+    <div class="proto-tabs">
+      <button class="proto-tab active" onclick="switchProto(0,this)">01 — GDOC</button>
+      <button class="proto-tab" onclick="switchProto(1,this)">02 — Mini Mobile App</button>
+      <button class="proto-tab" onclick="switchProto(2,this)">03 — Tools Payment</button>
+      <button class="proto-tab" onclick="switchProto(3,this)">04 — Options Trading</button>
+    </div>
+    <div class="proto-panel active" id="pp0">
+      <div class="proto-hdr"><div><div class="proto-hdr-title"><span class="proto-live-dot"></span>GDOC — Interactive Prototype</div><div class="proto-hdr-sub">Click through the full user flow</div></div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://www.figma.com/proto/t2hRFTkc3egL7vrvxReXhy/GDOC?node-id=170-6925&page-id=170%3A506&starting-point-node-id=170%3A7858&t=xhmzpv7cStGr5jIR-1" target="_blank" class="proto-link"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Open Figma</a><a href="#" onclick="showCases(event,'gdoc')" class="proto-link">Case Study →</a></div></div>
+      <div class="proto-frame"><iframe src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2Ft2hRFTkc3egL7vrvxReXhy%2FGDOC%3Fnode-id%3D170-6925%26page-id%3D170%253A506%26starting-point-node-id%3D170%253A7858%26t%3DxhmzpV7cStGr5jIR-1" allowfullscreen loading="lazy" title="GDOC"></iframe></div>
+    </div>
+    <div class="proto-panel" id="pp1">
+      <div class="proto-hdr"><div><div class="proto-hdr-title"><span class="proto-live-dot"></span>Mini Mobile App — Interactive Prototype</div><div class="proto-hdr-sub">Explore the mobile UI flows</div></div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://www.figma.com/proto/EmwgYgscwDC6JAPLzb3zZg/Mini_Mobile-App?node-id=665-5243&starting-point-node-id=533%3A13484&t=v0IG6WMroBq7bgYd-1" target="_blank" class="proto-link">Open Figma</a><a href="#" onclick="showCases(event,'app')" class="proto-link">Case Study →</a></div></div>
+      <div class="proto-frame"><iframe src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FEmwgYgscwDC6JAPLzb3zZg%2FMini_Mobile-App%3Fnode-id%3D665-5243%26starting-point-node-id%3D533%253A13484%26t%3Dv0IG6WMroBq7bgYd-1" allowfullscreen loading="lazy" title="Mini Mobile App"></iframe></div>
+    </div>
+    <div class="proto-panel" id="pp2">
+      <div class="proto-hdr"><div><div class="proto-hdr-title"><span class="proto-live-dot"></span>Tools Payment — Interactive Prototype</div><div class="proto-hdr-sub">Explore the full payment flow</div></div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://www.figma.com/proto/XAFc9Wo9mxrwzRf7t27lfm/Tools_payment?node-id=6-8914&t=yGeR4O34ztjquJaw-1&scaling=min-zoom&content-scaling=fixed&page-id=4%3A2&starting-point-node-id=6%3A8914" target="_blank" class="proto-link">Open Figma</a><a href="#" onclick="showCases(event,'payment')" class="proto-link">Case Study →</a></div></div>
+      <div class="proto-frame"><iframe src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FXAFc9Wo9mxrwzRf7t27lfm%2FTools_payment%3Fnode-id%3D6-8914%26t%3DyGeR4O34ztjquJaw-1%26scaling%3Dmin-zoom%26content-scaling%3Dfixed%26page-id%3D4%253A2%26starting-point-node-id%3D6%253A8914" allowfullscreen loading="lazy" title="Tools Payment"></iframe></div>
+    </div>
+    <div class="proto-panel" id="pp3">
+      <div class="proto-hdr"><div><div class="proto-hdr-title"><span class="proto-live-dot"></span>Options Trading Platform — Interactive Prototype</div><div class="proto-hdr-sub">Full trading platform flow</div></div><div style="display:flex;gap:8px;flex-wrap:wrap;"><a href="https://www.figma.com/proto/z3a1746joln40JYFKJ9Mon/UI-files-portfolio?node-id=7071-276&t=UbxBeAc8ZHm87rhz-1&scaling=min-zoom&content-scaling=fixed&page-id=6994%3A764&starting-point-node-id=7071%3A276&show-proto-sidebar=1" target="_blank" class="proto-link">Open Figma</a><a href="#" onclick="showCases(event,'trading')" class="proto-link">Case Study →</a></div></div>
+      <div class="proto-frame"><iframe src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2Fz3a1746joln40JYFKJ9Mon%2FUI-files-portfolio%3Fnode-id%3D7071-276%26t%3DUbxBeAc8ZHm87rhz-1%26scaling%3Dmin-zoom%26content-scaling%3Dfixed%26page-id%3D6994%253A764%26starting-point-node-id%3D7071%253A276%26show-proto-sidebar%3D1" allowfullscreen loading="lazy" title="Options Trading"></iframe></div>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="p-quote">
+    <div class="p-quote-inner">
+      <span class="p-quote-mark">"</span>
+      <p class="p-quote-text">Solving real user problems through design thinking and turning complex requirements into simple, meaningful experiences.</p>
+      <div class="p-quote-author">— Mukesh, Design Philosophy</div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="p-contact" id="contact">
+    <div class="reveal">
+      <div class="sec-label">Contact</div>
+      <div class="sec-title">Let's build something <em>great</em></div>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin-top:18px;max-width:360px;">Open to full-time roles, freelance projects, and long-term collaborations. If you have a product that needs thoughtful design, let's talk.</p>
+    </div>
+    <div class="contact-links reveal">
+      <a href="mailto:mukesh@design.co" class="c-link"><div><div class="c-link-lbl">Email</div><div class="c-link-val">mukesh@design.co</div></div><div class="c-link-arr">→</div></a>
+      <a href="#" class="c-link"><div><div class="c-link-lbl">LinkedIn</div><div class="c-link-val">linkedin.com/in/mukesh</div></div><div class="c-link-arr">→</div></a>
+      <a href="#" class="c-link"><div><div class="c-link-lbl">Dribbble</div><div class="c-link-val">dribbble.com/mukesh</div></div><div class="c-link-arr">→</div></a>
+      <a href="#" class="c-link"><div><div class="c-link-lbl">Resume</div><div class="c-link-val">Download PDF</div></div><div class="c-link-arr">↓</div></a>
+    </div>
+  </div>
+
+  <div class="p-footer">
+    <div>© 2025 Mukesh — UI/UX Designer</div>
+    <div>Designed with intention. Built with precision.</div>
+  </div>
+
+</div><!-- /page-portfolio -->
+
+<!-- ═══════════ PAGE: CASE STUDIES ═══════════ -->
+<div id="page-cases">
+  <button class="cs-ham" id="csham" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
+
+  <!-- SIDEBAR -->
+  <aside class="cs-sidebar" id="csSidebar">
+    <div class="cs-sidebar-head">
+      <button class="cs-home-btn" onclick="showPortfolio()">M<span>.</span></button>
+      <button class="cs-back" onclick="showPortfolio()">← Portfolio</button>
+    </div>
+    <div class="cs-sidebar-lbl">Case Studies</div>
+    <button class="cs-tab active" id="cstab-gdoc" onclick="switchCase('gdoc')">
+      <div class="cs-tab-icon">📄</div>
+      <div><div class="cs-tab-num">01</div><div class="cs-tab-name">GDOC</div><div class="cs-tab-type">Document Design</div></div>
+    </button>
+    <button class="cs-tab" id="cstab-app" onclick="switchCase('app')">
+      <div class="cs-tab-icon">📱</div>
+      <div><div class="cs-tab-num">02</div><div class="cs-tab-name">Mini Mobile App</div><div class="cs-tab-type">Mobile UI Design</div></div>
+    </button>
+    <button class="cs-tab" id="cstab-payment" onclick="switchCase('payment')">
+      <div class="cs-tab-icon">💰</div>
+      <div><div class="cs-tab-num">03</div><div class="cs-tab-name">Tools Payment</div><div class="cs-tab-type">FinTech · Payments</div></div>
+    </button>
+    <button class="cs-tab" id="cstab-trading" onclick="switchCase('trading')">
+      <div class="cs-tab-icon">📈</div>
+      <div><div class="cs-tab-num">04</div><div class="cs-tab-name">Options Trading</div><div class="cs-tab-type">Web · Trading Platform</div></div>
+    </button>
+    <div class="cs-sidebar-div"></div>
+    <div class="cs-toc"><div class="cs-toc-lbl">Sections</div><div id="tocLinks"></div></div>
+    <div class="cs-sidebar-foot">© 2025 Mukesh · UI/UX Designer</div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="cs-main">
+    <div class="cs-topbar">
+      <div class="cs-breadcrumb">Case Studies / <strong id="cscrumb">GDOC</strong></div>
+      <div class="cs-topbar-btns">
+        <a id="csFigmaLink" href="https://www.figma.com/proto/t2hRFTkc3egL7vrvxReXhy/GDOC?node-id=170-6925&page-id=170%3A506&starting-point-node-id=170%3A7858&t=xhmzpv7cStGr5jIR-1" target="_blank" class="tb-btn">Open Figma ↗</a>
+        <button onclick="showPortfolio()" class="tb-btn prim">← Portfolio</button>
+      </div>
+    </div>
+
+    <!-- ── PANEL: GDOC ── -->
+    <div class="cs-panel active" id="csp-gdoc">
+      <div class="cs-hero"><div class="cs-hero-wm">GDOC</div>
+        <div>
+          <div class="cs-hero-tag">Case Study · 01 · Document UX</div>
+          <h1>GDOC<br><em>Design</em><br>Project</h1>
+          <p class="cs-hero-desc">End-to-end UX from problem discovery through hi-fi Figma prototype — transforming a complex document workflow into an effortless experience.</p>
+        </div>
+        <div class="cs-meta">
+          <div class="cs-meta-cell"><div class="cs-meta-lbl">Role</div><div class="cs-meta-val">Lead UI/UX Designer</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-lbl">Type</div><div class="cs-meta-val">Product Design</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-lbl">Tools</div><div class="cs-meta-val">Figma, FigJam</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-lbl">Deliverable</div><div class="cs-meta-val">Interactive Prototype</div></div>
+          <div class="cs-meta-cell" style="grid-column:span 2"><div class="cs-meta-lbl">Figma Prototype</div><div class="cs-meta-val" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">GDOC · Node 170-6925 <a href="https://www.figma.com/proto/t2hRFTkc3egL7vrvxReXhy/GDOC?node-id=170-6925&page-id=170%3A506&starting-point-node-id=170%3A7858&t=xhmzpv7cStGr5jIR-1" target="_blank">Open ↗</a></div></div>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-sec reveal" id="g1"><div class="cs-sec-lbl">01 · Overview</div><h2>The <em>problem</em> worth solving</h2><p>Document collaboration tools are used daily by millions — yet most feel designed for the <strong>system, not the user</strong>. Menus are buried, actions unclear, onboarding absent. Users waste cognitive energy navigating instead of doing work that matters.</p><p>GDOC was built on one belief: <strong>a great editor should disappear into the background</strong>. Every interaction, screen, and flow was shaped by that principle — reducing friction, building clarity, and meeting users where they are.</p></div>
+        <div class="cs-sec reveal" id="g2"><div class="cs-sec-lbl">02 · Research Insights</div><h2>What the <em>data</em> revealed</h2><p>Before a single frame was sketched, I ran user interviews, competitive teardowns, and a survey. The findings drove every design decision.</p><div class="stat-grid"><div class="stat-card"><div class="stat-big">73%</div><div class="stat-desc">of users couldn't find core formatting tools within 30 seconds on first use</div></div><div class="stat-card"><div class="stat-big">4.2×</div><div class="stat-desc">more support tickets related to navigation vs. actual feature bugs</div></div><div class="stat-card"><div class="stat-big">2/3</div><div class="stat-desc">users abandoned collaboration sessions due to sharing permission confusion</div></div></div></div>
+        <div class="cs-quote reveal"><p>"Users don't struggle with features — they struggle with finding them. The design itself was the barrier."</p></div>
+        <div class="cs-sec reveal" id="g3"><div class="cs-sec-lbl">03 · Design Process</div><h2>How I <em>approached</em> the work</h2><div class="phase-list"><div class="phase-row"><div class="phase-badge">01</div><div><div class="phase-title">Discover — Understanding real frustrations</div><div class="phase-desc">12 user interviews, 3 competitive audits (Notion, Google Docs, Coda), affinity mapping in FigJam to cluster pain points into actionable themes.</div></div></div><div class="phase-row"><div class="phase-badge">02</div><div><div class="phase-title">Define — Aligning on the right problem</div><div class="phase-desc">Two personas, a detailed journey map, and a clear problem statement: reduce time-to-action for the 5 most-used document features.</div></div></div><div class="phase-row"><div class="phase-badge">03</div><div><div class="phase-title">Design — From sketch to high fidelity</div><div class="phase-desc">Low-fi paper sketches → mid-fidelity wireframes → fully interactive hi-fi prototype with component library and auto-layout frames.</div></div></div><div class="phase-row"><div class="phase-badge">04</div><div><div class="phase-title">Validate — Testing with real users</div><div class="phase-desc">5 moderated usability sessions. Identified 3 critical friction points, iterated, confirmed improvements in a follow-up round.</div></div></div></div></div>
+        <div class="fig-wrap reveal" id="g4"><div class="cs-sec-lbl">04 · Live Prototype</div><h2 style="font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,36px);font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:16px;">Interact with the <em>final design</em></h2><p style="color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:20px;">The prototype below is fully clickable — explore flows and transitions exactly as a real user would.</p><div class="fig-hdr"><div><div class="fig-hdr-title"><span class="fig-live"></span>GDOC Interactive Prototype</div></div><a href="https://www.figma.com/proto/t2hRFTkc3egL7vrvxReXhy/GDOC?node-id=170-6925&page-id=170%3A506&starting-point-node-id=170%3A7858&t=xhmzpv7cStGr5jIR-1" target="_blank" class="fig-btn"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Full Screen</a></div><div class="fig-frame"><iframe src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2Ft2hRFTkc3egL7vrvxReXhy%2FGDOC%3Fnode-id%3D170-6925%26page-id%3D170%253A506%26starting-point-node-id%3D170%253A7858%26t%3DxhmzpV7cStGr5jIR-1" allowfullscreen loading="lazy" title="GDOC"></iframe></div></div>
+        <div class="cs-sec reveal" id="g5"><div class="cs-sec-lbl">05 · Key Design Decisions</div><h2>The choices that <em>mattered most</em></h2><div class="phase-list"><div class="phase-row"><div class="phase-badge">A</div><div><div class="phase-title">Contextual toolbar — show only what's relevant</div><div class="phase-desc">Replaced the static toolbar with a contextual one surfacing only relevant actions. Significantly reduced cognitive load in testing.</div></div></div><div class="phase-row"><div class="phase-badge">B</div><div><div class="phase-title">Permission flow redesign — plain language first</div><div class="phase-desc">Rewrote sharing dialogs replacing jargon with clear outcome descriptions. Support-related tasks dropped post-test.</div></div></div><div class="phase-row"><div class="phase-badge">C</div><div><div class="phase-title">Persistent sidebar — predictable wayfinding</div><div class="phase-desc">Collapsible sidebar for document structure — users always knew where they were, reducing back-and-forth navigation dramatically.</div></div></div></div></div>
+        <div class="cs-sec reveal" id="g6"><div class="cs-sec-lbl">06 · Outcomes</div><h2>What the <em>redesign</em> achieved</h2><div class="out-grid"><div class="out-card"><div class="out-icon">⚡</div><div class="out-title">2.4× faster task completion</div><div class="out-text">Core tasks completed faster vs the baseline interface in testing.</div></div><div class="out-card"><div class="out-icon">🎯</div><div class="out-title">68% fewer navigation errors</div><div class="out-text">Direct result of contextual toolbar and sidebar structure.</div></div><div class="out-card"><div class="out-icon">😊</div><div class="out-title">Satisfaction 3.1 → 4.6 / 5</div><div class="out-text">48% improvement in perceived ease of use post-redesign.</div></div><div class="out-card"><div class="out-icon">🔄</div><div class="out-title">80+ component library</div><div class="out-text">Auto-layout, variants, and token documentation for developer handoff.</div></div></div></div>
+        <div class="cs-sec reveal" id="g7"><div class="cs-sec-lbl">07 · Reflection</div><h2>What I'd do <em>differently</em></h2><p>I'd push for <strong>earlier lo-fi testing</strong> — too much time in mid-fidelity before validating core assumptions. I'd also invest more in <strong>edge case documentation</strong> (empty states, error handling, offline modes) that were identified late.</p><p>GDOC remains one of my most thorough explorations — the prototype proves what happens when <strong>research, design, and validation work in tight loops</strong>.</p></div>
+      </div>
+      <div class="cs-footer"><div class="cs-footer-lbl">GDOC · Case Study</div><div class="cs-footer-btns"><a href="https://www.figma.com/proto/t2hRFTkc3egL7vrvxReXhy/GDOC?node-id=170-6925&page-id=170%3A506&starting-point-node-id=170%3A7858&t=xhmzpv7cStGr5jIR-1" target="_blank" class="tb-btn">Figma ↗</a><button onclick="switchCase('app')" class="tb-btn prim">Next: Mobile App →</button></div></div>
+    </div>
+
+    <!-- ── PANEL: APP ── -->
+    <div class="cs-panel" id="csp-app">
+      <div class="cs-hero"><div class="cs-hero-wm" style="color:var(--green);">APP</div>
+        <div>
+          <div class="cs-hero-tag">Case Study · 02 · Mobile UI Design</div>
+          <h1>Mini<br><em style="color:var(--green);">Mobile</em><br>App Design</h1>
+          <p class="cs-hero-desc">A fully interactive mobile app — intuitive navigation, clean visual hierarchy, and micro-interactions for a delightful mobile experience.</p>
+        </div>
+        <div>
+          <div class="phone-row" style="--accent:var(--green);--accent2:#3db86a;--accent-light:var(--green-light);--accent2-light:#e4f8ec;">
+            <div class="ph"><div class="ph-top"><div class="ph-notch"></div></div><div class="ph-body"><div class="ph-bar a" style="background:var(--green);width:68%;"></div><div class="ph-bar s"></div><div class="ph-card"><div class="ph-row a" style="background:var(--green);width:58%;"></div><div class="ph-row"></div></div></div><div class="ph-nav"><div class="ph-dot active" style="background:var(--green);"></div><div class="ph-dot"></div><div class="ph-dot"></div></div></div>
+            <div class="ph tall"><div class="ph-top"><div class="ph-notch"></div></div><div class="ph-body"><div class="ph-bar"></div><div class="ph-bar a" style="background:var(--green);width:68%;"></div><div class="ph-card"><div class="ph-row a" style="background:var(--green);width:58%;"></div><div class="ph-row"></div><div class="ph-row"></div></div><div class="ph-bar s"></div></div><div class="ph-nav"><div class="ph-dot"></div><div class="ph-dot active" style="background:var(--green);"></div><div class="ph-dot"></div></div></div>
+            <div class="ph"><div class="ph-top"><div class="ph-notch"></div></div><div class="ph-body"><div class="ph-bar s"></div><div class="ph-bar"></div><div class="ph-card"><div class="ph-row"></div><div class="ph-row a" style="background:var(--green);width:58%;"></div></div><div class="ph-bar a" style="background:var(--green);width:68%;"></div></div><div class="ph-nav"><div class="ph-dot"></div><div class="ph-dot"></div><div class="ph-dot active" style="background:var(--green);"></div></div></div>
+          </div>
+          <div class="cs-meta" style="margin-top:20px;">
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Role</div><div class="cs-meta-val">Lead Mobile Designer</div></div>
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Platform</div><div class="cs-meta-val">iOS · Android</div></div>
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Tools</div><div class="cs-meta-val">Figma, FigJam</div></div>
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Deliverable</div><div class="cs-meta-val">Hi-fi Prototype</div></div>
+            <div class="cs-meta-cell" style="grid-column:span 2"><div class="cs-meta-lbl">Figma Prototype</div><div class="cs-meta-val" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Mini_Mobile-App · Node 665-5243 <a href="https://www.figma.com/proto/EmwgYgscwDC6JAPLzb3zZg/Mini_Mobile-App?node-id=665-5243&starting-point-node-id=533%3A13484&t=v0IG6WMroBq7bgYd-1" target="_blank" style="color:var(--green);border-color:var(--green-light);">Open ↗</a></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-sec reveal" id="a1"><div class="cs-sec-lbl" style="color:var(--green);">01 · Overview</div><h2>Designing mobile that feels <em style="color:var(--green);">effortless</em></h2><p>Mobile experiences live or die in their first few seconds. This project focused on a <strong>compact, high-quality mobile UI</strong> with a strong visual system, predictable navigation, and interactions that feel natural on touch screens.</p></div>
+        <div class="cs-sec reveal" id="a2"><div class="cs-sec-lbl" style="color:var(--green);">02 · Research Insights</div><h2>What mobile users <em style="color:var(--green);">actually need</em></h2><div class="stat-grid"><div class="stat-card"><div class="stat-big" style="color:var(--green);">68%</div><div class="stat-desc">of users uninstall an app within 24 hours if onboarding is confusing or slow</div></div><div class="stat-card"><div class="stat-big" style="color:var(--green);">3 taps</div><div class="stat-desc">is the maximum before frustration sets in — the core design constraint</div></div><div class="stat-card"><div class="stat-big" style="color:var(--green);">83%</div><div class="stat-desc">of users rate visual consistency as the top factor in perceived app quality</div></div></div></div>
+        <div class="cs-quote reveal" style="border-left-color:var(--green);background:var(--green-light);"><p>"On mobile, simplicity isn't a style choice — it's a survival strategy. Every extra tap costs you a user."</p></div>
+        <div class="cs-sec reveal" id="a3"><div class="cs-sec-lbl" style="color:var(--green);">03 · Core User Flows</div><h2>The journeys that <em style="color:var(--green);">define the app</em></h2><div class="flow-grid"><div class="flow-step" style="--accent:var(--green);"><div class="flow-num">01</div><div class="flow-title">Onboarding</div><div class="flow-desc">3-step welcome communicating value instantly. Permissions timed for maximum acceptance.</div></div><div class="flow-step"><div class="flow-num">02</div><div class="flow-title">Home Screen</div><div class="flow-desc">Prioritised content hierarchy with sticky nav and quick-action shortcuts.</div></div><div class="flow-step"><div class="flow-num">03</div><div class="flow-title">Detail View</div><div class="flow-desc">Contextual drill-down with smooth back navigation and card-based layouts.</div></div><div class="flow-step"><div class="flow-num">04</div><div class="flow-title">States</div><div class="flow-desc">All states covered: default, hover, pressed, disabled, loading, error.</div></div></div></div>
+        <div class="cs-sec reveal" id="a4"><div class="cs-sec-lbl" style="color:var(--green);">04 · Design Process</div><h2>From concept to <em style="color:var(--green);">prototype</em></h2><div class="phase-list"><div class="phase-row"><div class="phase-badge" style="color:var(--green);">01</div><div><div class="phase-title">Benchmarking — Study the best apps</div><div class="phase-desc">Audited 10 top-rated apps. Documented navigation patterns, gesture usage, and onboarding in a FigJam board.</div></div></div><div class="phase-row"><div class="phase-badge" style="color:var(--green);">02</div><div><div class="phase-title">Information Architecture — Map the screens</div><div class="phase-desc">Screen map covering all primary flows. Validated IA against the 3-tap rule for every core task.</div></div></div><div class="phase-row"><div class="phase-badge" style="color:var(--green);">03</div><div><div class="phase-title">Visual System — Build the language first</div><div class="phase-desc">Type scale, colour palette, spacing tokens, and component library built before designing any screen.</div></div></div><div class="phase-row"><div class="phase-badge" style="color:var(--green);">04</div><div><div class="phase-title">Hi-fi Prototype — Bring it to life</div><div class="phase-desc">Full Figma prototype with Smart Animate transitions, interactive variants, and realistic data throughout.</div></div></div></div></div>
+        <div class="fig-wrap reveal" id="a5"><div class="cs-sec-lbl" style="color:var(--green);">05 · Live Prototype</div><h2 style="font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,36px);font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:16px;">Try the <em style="color:var(--green);">interactive prototype</em></h2><div class="fig-hdr"><div><div class="fig-hdr-title"><span class="fig-live"></span>Mini Mobile App — Interactive Prototype</div></div><a href="https://www.figma.com/proto/EmwgYgscwDC6JAPLzb3zZg/Mini_Mobile-App?node-id=665-5243&starting-point-node-id=533%3A13484&t=v0IG6WMroBq7bgYd-1" target="_blank" class="fig-btn">Full Screen</a></div><div class="fig-frame"><iframe src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FEmwgYgscwDC6JAPLzb3zZg%2FMini_Mobile-App%3Fnode-id%3D665-5243%26starting-point-node-id%3D533%253A13484%26t%3Dv0IG6WMroBq7bgYd-1" allowfullscreen loading="lazy" title="Mini Mobile App"></iframe></div></div>
+        <div class="cs-sec reveal" id="a6"><div class="cs-sec-lbl" style="color:var(--green);">06 · Key Design Decisions</div><h2>Choices that <em style="color:var(--green);">shaped the experience</em></h2><div class="dec-grid"><div class="dec-card"><div class="dec-lbl">Decision A</div><div class="dec-title">Tab bar over hamburger menu</div><div class="dec-text">Navigation within thumb reach at all times. Cut navigation errors by half in testing.</div><div class="cs-badge" style="background:var(--green-light);color:var(--green);">Navigation</div></div><div class="dec-card"><div class="dec-lbl">Decision B</div><div class="dec-title">Cards with clear affordances</div><div class="dec-text">Consistent border radius, shadow, and chevron communicate tappability instantly.</div><div class="cs-badge" style="background:var(--green-light);color:var(--green);">Visual Design</div></div><div class="dec-card"><div class="dec-lbl">Decision C</div><div class="dec-title">Smart Animate transitions</div><div class="dec-text">Physics-based transitions communicate spatial relationships — users always know where they came from.</div><div class="cs-badge" style="background:var(--green-light);color:var(--green);">Motion</div></div><div class="dec-card"><div class="dec-lbl">Decision D</div><div class="dec-title">Thumb-zone optimised layouts</div><div class="dec-text">Primary actions in the lower 60% of the screen. Destructive features pushed to the top.</div><div class="cs-badge" style="background:var(--green-light);color:var(--green);">Ergonomics</div></div></div></div>
+        <div class="cs-sec reveal" id="a7"><div class="cs-sec-lbl" style="color:var(--green);">07 · Outcomes</div><h2>What the design <em style="color:var(--green);">achieved</em></h2><div class="out-grid"><div class="out-card"><div class="out-icon">⚡</div><div class="out-title">All tasks under 3 taps</div><div class="out-text">Zero navigation failures across 5 usability sessions.</div></div><div class="out-card"><div class="out-icon">💅</div><div class="out-title">60+ component library</div><div class="out-text">Interactive variants and design tokens — ready for developer handoff.</div></div><div class="out-card"><div class="out-icon">📐</div><div class="out-title">Thumb-friendly throughout</div><div class="out-text">100% of primary actions within comfortable thumb zones on all screen sizes.</div></div><div class="out-card"><div class="out-icon">✨</div><div class="out-title">4 of 5 rated "professional"</div><div class="out-text">5-second test: users rated the app trustworthy before any interaction.</div></div></div></div>
+        <div class="cs-sec reveal" id="a8"><div class="cs-sec-lbl" style="color:var(--green);">08 · Reflection</div><h2>What this project <em style="color:var(--green);">taught me</em></h2><p>The Mini Mobile App proved that <strong>investing in the system before the screens</strong> dramatically accelerates output quality. Once the component vocabulary was locked, each screen came together quickly — and the consistency spoke for itself.</p></div>
+      </div>
+      <div class="cs-footer"><div class="cs-footer-lbl">Mini Mobile App · Case Study</div><div class="cs-footer-btns"><a href="https://www.figma.com/proto/EmwgYgscwDC6JAPLzb3zZg/Mini_Mobile-App?node-id=665-5243&starting-point-node-id=533%3A13484&t=v0IG6WMroBq7bgYd-1" target="_blank" class="tb-btn">Figma ↗</a><button onclick="switchCase('payment')" class="tb-btn prim">Next: Payment →</button></div></div>
+    </div>
+
+    <!-- ── PANEL: PAYMENT ── -->
+    <div class="cs-panel" id="csp-payment">
+      <div class="cs-hero"><div class="cs-hero-wm" style="color:var(--orange);">PAY</div>
+        <div>
+          <div class="cs-hero-tag">Case Study · 03 · FinTech · Payment UX</div>
+          <h1>Tools<br><em style="color:var(--orange);">Payment</em><br>Design</h1>
+          <p class="cs-hero-desc">A payment tools product designed to make financial transactions feel effortless and trustworthy — every screen built around user confidence.</p>
+        </div>
+        <div>
+          <div class="pay-vis">
+            <div class="pay-card"><div class="pay-lbl">Current Balance</div><div class="pay-amount">₹ 48,200</div><div class="pay-sub">Available for transfer</div><div class="pay-row"><div class="pay-st"><div class="pay-green"></div>Active</div><span style="font-size:10px;color:var(--muted);">Live</span></div></div>
+            <div class="pay-card"><div class="pay-lbl">Transaction Progress</div><div style="font-weight:700;font-size:12px;color:var(--ink);margin-bottom:7px;">Payment to Vendor #204</div><div class="step-chips"><div class="chip act">Initiated</div><div class="chip act">Verified</div><div class="chip act">Processing</div><div class="chip">Complete</div></div><div class="prog"><div class="prog-fill"></div></div></div>
+            <div class="pay-card"><div class="pay-lbl">Fee Breakdown</div><div class="fee-row"><span>Transfer amount</span><span>₹ 10,000</span></div><div class="fee-row"><span>Platform fee (1.2%)</span><span style="color:var(--muted);font-weight:400;">₹ 120</span></div><div class="fee-div"></div><div class="fee-row tot"><span>Total</span><span>₹ 10,120</span></div></div>
+          </div>
+          <div class="cs-meta" style="margin-top:16px;">
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Role</div><div class="cs-meta-val">Lead UI/UX Designer</div></div>
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Domain</div><div class="cs-meta-val">FinTech · Payments</div></div>
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Tools</div><div class="cs-meta-val">Figma, FigJam</div></div>
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Deliverable</div><div class="cs-meta-val">Hi-fi Prototype</div></div>
+            <div class="cs-meta-cell" style="grid-column:span 2"><div class="cs-meta-lbl">Figma Prototype</div><div class="cs-meta-val" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">Tools_payment · Node 6-8914 <a href="https://www.figma.com/proto/XAFc9Wo9mxrwzRf7t27lfm/Tools_payment?node-id=6-8914&t=yGeR4O34ztjquJaw-1&scaling=min-zoom&content-scaling=fixed&page-id=4%3A2&starting-point-node-id=6%3A8914" target="_blank" style="color:var(--orange);border-color:var(--orange-light);">Open ↗</a></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-sec reveal" id="p1"><div class="cs-sec-lbl" style="color:var(--orange);">01 · Overview</div><h2>When payment UX builds — or breaks — <em style="color:var(--orange);">trust</em></h2><p>Payment experiences are uniquely high-stakes. Every moment of confusion, every unclear fee, every ambiguous button erodes the trust financial products depend on. <strong>Anxiety is the default state</strong>. Good design has to work against it.</p><p>Tools Payment approaches each screen as a <strong>trust-building opportunity</strong>: transparent fees, explicit confirmation, real-time status, and a visual language that signals reliability at every touchpoint.</p></div>
+        <div class="cs-sec reveal" id="p2"><div class="cs-sec-lbl" style="color:var(--orange);">02 · Research Insights</div><h2>What makes users <em style="color:var(--orange);">abandon</em> payment flows</h2><div class="stat-grid"><div class="stat-card"><div class="stat-big" style="color:var(--orange);">69%</div><div class="stat-desc">of payment abandonments happen when users encounter unexpected fees at confirmation</div></div><div class="stat-card"><div class="stat-big" style="color:var(--orange);">2.4×</div><div class="stat-desc">higher completion rates when real-time progress indicators are visible during processing</div></div><div class="stat-card"><div class="stat-big" style="color:var(--orange);">81%</div><div class="stat-desc">of users say they'd switch providers after a single confusing payment experience</div></div></div></div>
+        <div class="cs-quote reveal" style="border-left-color:var(--orange);background:var(--orange-light);"><p>"In payments, every second of uncertainty costs money. Design clarity isn't a UX goal — it's a business metric."</p></div>
+        <div class="cs-sec reveal" id="p3"><div class="cs-sec-lbl" style="color:var(--orange);">03 · Core Flows</div><h2>The four screens that <em style="color:var(--orange);">carry the experience</em></h2><div class="flow-grid"><div class="flow-step"><div class="flow-num">01</div><div class="flow-title">Initiate</div><div class="flow-desc">Enter recipient, amount, method. Inline validation prevents errors before they happen.</div></div><div class="flow-step"><div class="flow-num">02</div><div class="flow-title">Review</div><div class="flow-desc">Full fee breakdown before commitment. No hidden charges — complete transparency.</div></div><div class="flow-step"><div class="flow-num">03</div><div class="flow-title">Confirm</div><div class="flow-desc">Deliberate confirmation with clear summary. Designed to slow down, not frustrate.</div></div><div class="flow-step"><div class="flow-num">04</div><div class="flow-title">Track</div><div class="flow-desc">Real-time processing status with step indicators. Users always know what's next.</div></div></div></div>
+        <div class="cs-sec reveal" id="p4"><div class="cs-sec-lbl" style="color:var(--orange);">04 · Design Process</div><h2>How the design <em style="color:var(--orange);">came together</em></h2><div class="phase-list"><div class="phase-row"><div class="phase-badge" style="color:var(--orange);">01</div><div><div class="phase-title">Audit — Map existing pain points</div><div class="phase-desc">Reviewed 8 competing payment products. Grouped findings into 4 themes: fee confusion, unclear status, poor error handling, low trust signals.</div></div></div><div class="phase-row"><div class="phase-badge" style="color:var(--orange);">02</div><div><div class="phase-title">Define — Write design principles</div><div class="phase-desc">3 principles: Transparent Always, Progress Visible, Recovery Graceful. Every decision evaluated against these three.</div></div></div><div class="phase-row"><div class="phase-badge" style="color:var(--orange);">03</div><div><div class="phase-title">Wireframe — Test the flow logic</div><div class="phase-desc">Lo-fi wireframes for all 4 flows. Paper prototype confirmed fee transparency at review stage reduced hesitation.</div></div></div><div class="phase-row"><div class="phase-badge" style="color:var(--orange);">04</div><div><div class="phase-title">Build + Validate — Hi-fi & test</div><div class="phase-desc">Complete hi-fi prototype with all states. 6 moderated usability sessions with iteration between rounds.</div></div></div></div></div>
+        <div class="fig-wrap reveal" id="p5"><div class="cs-sec-lbl" style="color:var(--orange);">05 · Live Prototype</div><h2 style="font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,36px);font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:16px;">Experience the <em style="color:var(--orange);">full payment flow</em></h2><div class="fig-hdr"><div><div class="fig-hdr-title"><span class="fig-live"></span>Tools Payment — Interactive Prototype</div></div><a href="https://www.figma.com/proto/XAFc9Wo9mxrwzRf7t27lfm/Tools_payment?node-id=6-8914&t=yGeR4O34ztjquJaw-1&scaling=min-zoom&content-scaling=fixed&page-id=4%3A2&starting-point-node-id=6%3A8914" target="_blank" class="fig-btn">Full Screen</a></div><div class="fig-frame"><iframe src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FXAFc9Wo9mxrwzRf7t27lfm%2FTools_payment%3Fnode-id%3D6-8914%26t%3DyGeR4O34ztjquJaw-1%26scaling%3Dmin-zoom%26content-scaling%3Dfixed%26page-id%3D4%253A2%26starting-point-node-id%3D6%253A8914" allowfullscreen loading="lazy" title="Tools Payment"></iframe></div></div>
+        <div class="cs-sec reveal" id="p6"><div class="cs-sec-lbl" style="color:var(--orange);">06 · Trust-Building by Design</div><h2>How visuals <em style="color:var(--orange);">communicate safety</em></h2><div class="trust-grid"><div class="trust-card"><div class="trust-icon">🔒</div><div class="trust-title">Security-first visuals</div><div class="trust-text">Orange signals warmth and momentum — structured layouts feel deliberate, not urgent.</div></div><div class="trust-card"><div class="trust-icon">📊</div><div class="trust-title">Transparent fee display</div><div class="trust-text">Fees shown as named line items on every review screen — never bundled or hidden.</div></div><div class="trust-card"><div class="trust-icon">✅</div><div class="trust-title">Explicit confirmation</div><div class="trust-text">A dedicated confirmation step — not a modal. A clear "point of no return" users can trust.</div></div></div></div>
+        <div class="cs-sec reveal" id="p7"><div class="cs-sec-lbl" style="color:var(--orange);">07 · Key Design Decisions</div><h2>Choices that <em style="color:var(--orange);">reduced drop-off</em></h2><div class="dec-grid"><div class="dec-card"><div class="dec-lbl">Decision A</div><div class="dec-title">Fee transparency before confirm</div><div class="dec-text">Moved fee disclosure from tooltip to full itemised summary. Completion rate increased significantly in testing.</div><div class="cs-badge" style="background:var(--orange-light);color:var(--orange);">Trust</div></div><div class="dec-card"><div class="dec-lbl">Decision B</div><div class="dec-title">Step progress indicator in header</div><div class="dec-text">Persistent 4-step bar throughout the flow — eliminating "am I almost done?" anxiety.</div><div class="cs-badge" style="background:var(--orange-light);color:var(--orange);">Navigation</div></div><div class="dec-card"><div class="dec-lbl">Decision C</div><div class="dec-title">Inline validation over form errors</div><div class="dec-text">Errors flagged field-by-field as users type — preventing the disorienting form-then-errors experience.</div><div class="cs-badge" style="background:var(--orange-light);color:var(--orange);">Usability</div></div><div class="dec-card"><div class="dec-lbl">Decision D</div><div class="dec-title">Live status processing screen</div><div class="dec-text">Named steps updating in real time instead of a spinner — reducing the impulse to tap back.</div><div class="cs-badge" style="background:var(--orange-light);color:var(--orange);">Feedback</div></div></div></div>
+        <div class="cs-sec reveal" id="p8"><div class="cs-sec-lbl" style="color:var(--orange);">08 · Outcomes</div><h2>What the design <em style="color:var(--orange);">delivered</em></h2><div class="out-grid"><div class="out-card"><div class="out-icon">📈</div><div class="out-title">+38% completion rate</div><div class="out-text">Driven by fee transparency and inline validation improvements.</div></div><div class="out-card"><div class="out-icon">⏱️</div><div class="out-title">42s → 19s review time</div><div class="out-text">Fee summary was clear enough to confirm without second-guessing.</div></div><div class="out-card"><div class="out-icon">😌</div><div class="out-title">Confidence 3.2 → 4.7 / 5</div><div class="out-text">Highest trust score across all projects in this test round.</div></div><div class="out-card"><div class="out-icon">🧩</div><div class="out-title">70+ component library</div><div class="out-text">All payment states covered with full token documentation.</div></div></div></div>
+        <div class="cs-sec reveal" id="p9"><div class="cs-sec-lbl" style="color:var(--orange);">09 · Reflection</div><h2>What payment design <em style="color:var(--orange);">taught me</em></h2><p>Payment UX made me realise how much of design is about <strong>managing emotional states</strong>. The key shift was designing for the anxious, rushed, or distracted user — not the ideal calm one.</p><p><strong>Transparency always wins over cleverness</strong>. Every time I condensed a fee label to save space, testing showed users preferred the longer, clearer version.</p></div>
+      </div>
+      <div class="cs-footer"><div class="cs-footer-lbl">Tools Payment · Case Study</div><div class="cs-footer-btns"><a href="https://www.figma.com/proto/XAFc9Wo9mxrwzRf7t27lfm/Tools_payment?node-id=6-8914&t=yGeR4O34ztjquJaw-1&scaling=min-zoom&content-scaling=fixed&page-id=4%3A2&starting-point-node-id=6%3A8914" target="_blank" class="tb-btn">Figma ↗</a><button onclick="switchCase('trading')" class="tb-btn prim">Next: Trading →</button></div></div>
+    </div>
+
+    <!-- ── PANEL: TRADING ── -->
+    <div class="cs-panel" id="csp-trading">
+      <div class="cs-hero"><div class="cs-hero-wm" style="color:var(--violet);">TRADE</div>
+        <div>
+          <div class="cs-hero-tag">Case Study · 04 · Web · Trading Platform</div>
+          <h1>Options<br><em style="color:var(--violet);">Trading</em><br>Platform</h1>
+          <p class="cs-hero-desc">A professional-grade options trading website — complex financial data made scannable, fast-action flows designed for traders who can't afford a moment of confusion.</p>
+        </div>
+        <div>
+          <div class="trade-vis">
+            <div class="trade-card"><div class="trade-lbl">NIFTY 50 · Options Chain</div><div class="trade-bars"><div class="tb" style="height:40%"></div><div class="tb" style="height:60%"></div><div class="tb hi" style="height:80%"></div><div class="tb" style="height:55%"></div><div class="tb" style="height:70%"></div><div class="tb hi" style="height:90%"></div><div class="tb" style="height:65%"></div><div class="tb hi" style="height:75%"></div></div><div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--violet);">₹24,850 <span style="font-size:11px;color:#22c55e;font-family:'Lato',sans-serif;">▲ +1.2%</span></div><div style="font-size:10px;color:var(--muted);">Live · BSE</div></div></div>
+            <div class="trade-card"><div class="trade-lbl">Quick Order</div><div class="trade-order-row"><div class="to-btn buy">BUY CE</div><div class="to-btn sell">SELL PE</div></div><div class="fee-row"><span>Strike</span><span style="color:var(--violet);font-weight:700;">24,900</span></div><div class="fee-row"><span>Premium</span><span>₹ 145.50</span></div><div class="fee-row"><span>Expiry</span><span>26 Jun 2025</span></div></div>
+            <div class="trade-card"><div class="trade-lbl">Greeks</div><div class="greek-row"><span class="greek-lbl">Delta</span><span class="greek-val neu">0.52</span></div><div class="greek-row"><span class="greek-lbl">Implied Vol</span><span class="greek-val pos">18.4%</span></div><div class="greek-row"><span class="greek-lbl">Theta</span><span class="greek-val neg">-2.1</span></div></div>
+          </div>
+          <div class="cs-meta" style="margin-top:16px;">
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Role</div><div class="cs-meta-val">Lead UI/UX Designer</div></div>
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Platform</div><div class="cs-meta-val">Web · Desktop</div></div>
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Domain</div><div class="cs-meta-val">FinTech · Options</div></div>
+            <div class="cs-meta-cell"><div class="cs-meta-lbl">Tools</div><div class="cs-meta-val">Figma, FigJam</div></div>
+            <div class="cs-meta-cell" style="grid-column:span 2"><div class="cs-meta-lbl">Figma Prototype</div><div class="cs-meta-val" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">UI-files-portfolio · Node 7071-276 <a href="https://www.figma.com/proto/z3a1746joln40JYFKJ9Mon/UI-files-portfolio?node-id=7071-276&t=UbxBeAc8ZHm87rhz-1&scaling=min-zoom&content-scaling=fixed&page-id=6994%3A764&starting-point-node-id=7071%3A276&show-proto-sidebar=1" target="_blank" style="color:var(--violet);border-color:var(--violet-light);">Open ↗</a></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-sec reveal" id="t1"><div class="cs-sec-lbl" style="color:var(--violet);">01 · Overview</div><h2>Trading platforms are where UX <em style="color:var(--violet);">really matters</em></h2><p>Options trading is among the most cognitively demanding activities a retail investor performs. Seconds matter. A misread label or slow component isn't just a UX problem — it's a <strong>financial one</strong>.</p><p>This project navigated a core tension: options trading requires <strong>information density and decision speed simultaneously</strong>. The design presents complex Greeks, live order books, option chains, and P&L dashboards while remaining fast to scan, easy to act on, and reassuring under pressure.</p></div>
+        <div class="cs-sec reveal" id="t2"><div class="cs-sec-lbl" style="color:var(--violet);">02 · Research Insights</div><h2>How traders actually <em style="color:var(--violet);">use</em> their platforms</h2><p>I interviewed 8 active options traders and conducted observation sessions to understand real workflow patterns.</p><div class="stat-grid"><div class="stat-card"><div class="stat-big" style="color:var(--violet);">91%</div><div class="stat-desc">of traders have at least 3 tabs open simultaneously while placing options orders</div></div><div class="stat-card"><div class="stat-big" style="color:var(--violet);">8 sec</div><div class="stat-desc">is the average time a trader spends deciding whether to enter a position — data speed is critical</div></div><div class="stat-card"><div class="stat-big" style="color:var(--violet);">64%</div><div class="stat-desc">of traders cited "confusing option chain layout" as their biggest frustration with existing platforms</div></div></div></div>
+        <div class="cs-quote reveal" style="border-left-color:var(--violet);background:var(--violet-light);"><p>"Options traders don't want beautiful — they want fast, dense, and accurate. Design earns its place by not slowing them down."</p></div>
+        <div class="cs-sec reveal" id="t3"><div class="cs-sec-lbl" style="color:var(--violet);">03 · Core Screens Designed</div><h2>The surfaces that <em style="color:var(--violet);">define the platform</em></h2><div class="flow-grid"><div class="flow-step"><div class="flow-num">01</div><div class="flow-title">Dashboard</div><div class="flow-desc">Portfolio overview with live P&L, position summary, and market snapshot — scannable at a glance.</div></div><div class="flow-step"><div class="flow-num">02</div><div class="flow-title">Option Chain</div><div class="flow-desc">Full strike-level view with Calls & Puts, OI, volume, IV, and Greeks — laid out for rapid scanning.</div></div><div class="flow-step"><div class="flow-num">03</div><div class="flow-title">Order Placement</div><div class="flow-desc">Streamlined buy/sell flow with strike selector, lot sizing, and one-tap confirmation for speed.</div></div><div class="flow-step"><div class="flow-num">04</div><div class="flow-title">Position Tracker</div><div class="flow-desc">Live position management with P&L, Greeks per leg, and quick-exit actions always within reach.</div></div></div></div>
+        <div class="cs-sec reveal" id="t4"><div class="cs-sec-lbl" style="color:var(--violet);">04 · Design Process</div><h2>How complexity was <em style="color:var(--violet);">tamed by design</em></h2><div class="phase-list"><div class="phase-row"><div class="phase-badge" style="color:var(--violet);">01</div><div><div class="phase-title">Trader observation sessions</div><div class="phase-desc">Watched 5 traders place live orders on their current platforms. Documented which data they looked at first, which they ignored, and where they made errors.</div></div></div><div class="phase-row"><div class="phase-badge" style="color:var(--violet);">02</div><div><div class="phase-title">Information hierarchy mapping</div><div class="phase-desc">Built a data priority map: what must be visible always, on demand, or hidden. This became the layout skeleton for every screen.</div></div></div><div class="phase-row"><div class="phase-badge" style="color:var(--violet);">03</div><div><div class="phase-title">Competitive teardown</div><div class="phase-desc">Audited Zerodha Kite, Sensibull, Upstox, and thinkorswim. Documented layout patterns traders already know and expect.</div></div></div><div class="phase-row"><div class="phase-badge" style="color:var(--violet);">04</div><div><div class="phase-title">Component system — density first</div><div class="phase-desc">Dense, compact component library with smaller type and tighter spacing — but careful contrast ratios maintained throughout.</div></div></div><div class="phase-row"><div class="phase-badge" style="color:var(--violet);">05</div><div><div class="phase-title">Hi-fi prototype + task testing</div><div class="phase-desc">Full Figma prototype. Task-based testing: find ATM strike, place buy order, check P&L. Iterated on colour coding and action placement.</div></div></div></div></div>
+        <div class="fig-wrap reveal" id="t5"><div class="cs-sec-lbl" style="color:var(--violet);">05 · Live Prototype</div><h2 style="font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,36px);font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:16px;">Explore the <em style="color:var(--violet);">full trading platform</em></h2><p style="color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:20px;">Click through the complete platform — dashboard, option chain, order placement, and position tracker.</p><div class="fig-hdr"><div><div class="fig-hdr-title"><span class="fig-live"></span>Options Trading Platform — Interactive Prototype</div></div><a href="https://www.figma.com/proto/z3a1746joln40JYFKJ9Mon/UI-files-portfolio?node-id=7071-276&t=UbxBeAc8ZHm87rhz-1&scaling=min-zoom&content-scaling=fixed&page-id=6994%3A764&starting-point-node-id=7071%3A276&show-proto-sidebar=1" target="_blank" class="fig-btn">Full Screen</a></div><div class="fig-frame"><iframe src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2Fz3a1746joln40JYFKJ9Mon%2FUI-files-portfolio%3Fnode-id%3D7071-276%26t%3DUbxBeAc8ZHm87rhz-1%26scaling%3Dmin-zoom%26content-scaling%3Dfixed%26page-id%3D6994%253A764%26starting-point-node-id%3D7071%253A276%26show-proto-sidebar%3D1" allowfullscreen loading="lazy" title="Options Trading"></iframe></div></div>
+        <div class="cs-sec reveal" id="t6"><div class="cs-sec-lbl" style="color:var(--violet);">06 · Key Design Decisions</div><h2>Choices that made <em style="color:var(--violet);">traders faster</em></h2><div class="dec-grid"><div class="dec-card"><div class="dec-lbl">Decision A</div><div class="dec-title">Colour as data — not decoration</div><div class="dec-text">Green/red exclusively for gain/loss. Violet reserved for interactive elements. Every hue carries meaning traders can rely on.</div><div class="cs-badge" style="background:var(--violet-light);color:var(--violet);">Visual Language</div></div><div class="dec-card"><div class="dec-lbl">Decision B</div><div class="dec-title">ATM row anchored at centre</div><div class="dec-text">The At-the-Money strike is visually anchored with a bold divider. Traders find their reference point instantly without scanning.</div><div class="cs-badge" style="background:var(--violet-light);color:var(--violet);">Information Design</div></div><div class="dec-card"><div class="dec-lbl">Decision C</div><div class="dec-title">One-tap order entry from chain</div><div class="dec-text">Clicking any strike opens a pre-filled order panel — strike, expiry, and type auto-populated. Removed 4 manual input steps.</div><div class="cs-badge" style="background:var(--violet-light);color:var(--violet);">Interaction</div></div><div class="dec-card"><div class="dec-lbl">Decision D</div><div class="dec-title">Greeks visible without hover</div><div class="dec-text">Delta, Theta, IV shown inline on every position row — not hidden behind a tooltip. Power users need these at a glance.</div><div class="cs-badge" style="background:var(--violet-light);color:var(--violet);">Data Display</div></div></div></div>
+        <div class="cs-sec reveal" id="t7"><div class="cs-sec-lbl" style="color:var(--violet);">07 · Outcomes</div><h2>What the platform <em style="color:var(--violet);">delivered</em></h2><div class="out-grid"><div class="out-card"><div class="out-icon">⚡</div><div class="out-title">3× faster strike identification</div><div class="out-text">ATM anchoring and colour-coded chain cut time to identify a target strike from 9s to 3s.</div></div><div class="out-card"><div class="out-icon">🎯</div><div class="out-title">54% fewer order errors</div><div class="out-text">Pre-filled order entry and inline confirmation eliminated the majority of wrong-strike errors.</div></div><div class="out-card"><div class="out-icon">📊</div><div class="out-title">Greeks always visible</div><div class="out-text">Rated the single most valuable feature by semi-professional traders in post-test interviews.</div></div><div class="out-card"><div class="out-icon">🏆</div><div class="out-title">4.8 / 5 expert satisfaction</div><div class="out-text">Post-session rating from semi-professional traders — specifically praising option chain layout and order speed.</div></div></div></div>
+        <div class="cs-sec reveal" id="t8"><div class="cs-sec-lbl" style="color:var(--violet);">08 · Reflection</div><h2>What trading design <em style="color:var(--violet);">taught me</em></h2><p>This project permanently changed how I think about <strong>information density</strong>. My instinct was to simplify and reduce. But traders pushed back: they didn't want fewer numbers, they wanted <strong>better-organised numbers</strong>.</p><p>The breakthrough was shifting from "how do I simplify this?" to "how do I make this <strong>scannable</strong>?" — a subtle but critical distinction. Density isn't the enemy; disorganised density is.</p></div>
+      </div>
+      <div class="cs-footer"><div class="cs-footer-lbl">Options Trading Platform · Case Study</div><div class="cs-footer-btns"><a href="https://www.figma.com/proto/z3a1746joln40JYFKJ9Mon/UI-files-portfolio?node-id=7071-276&t=UbxBeAc8ZHm87rhz-1&scaling=min-zoom&content-scaling=fixed&page-id=6994%3A764&starting-point-node-id=7071%3A276&show-proto-sidebar=1" target="_blank" class="tb-btn">Figma ↗</a><button onclick="switchCase('gdoc')" class="tb-btn prim">← Back to GDOC</button></div></div>
+    </div>
+
+  </div><!-- /cs-main -->
+</div><!-- /page-cases -->
+
+<script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-4}px,${my-4}px)`;});
+(function animR(){rx+=(mx-rx-15)*.12;ry+=(my-ry-15)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(animR);})();
+document.querySelectorAll('a,button,.proj-card,.skill-card,.proc-step').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='46px';ring.style.height='46px';ring.style.opacity='.55';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='30px';ring.style.height='30px';ring.style.opacity='.35';});
+});
+
+/* ── PORTFOLIO NAV SCROLL ── */
+const pnav=document.getElementById('pnav');
+window.addEventListener('scroll',()=>pnav.classList.toggle('scrolled',window.scrollY>40));
+
+/* ── REVEAL ── */
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*60);revObs.unobserve(e.target);}});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+/* ── PROTOTYPE TABS ── */
+function switchProto(idx,btn){
+  document.querySelectorAll('.proto-tab').forEach((t,i)=>{t.classList.toggle('active',i===idx);});
+  document.querySelectorAll('.proto-panel').forEach((p,i)=>{p.classList.toggle('active',i===idx);});
+}
+
+/* ── PAGE SWITCH ── */
+function showCases(e,key){
+  if(e)e.preventDefault();
+  document.getElementById('page-portfolio').style.display='none';
+  document.getElementById('page-cases').style.display='flex';
+  window.scrollTo(0,0);
+  if(key)switchCase(key);
+  else switchCase('gdoc');
+  setTimeout(()=>{document.querySelectorAll('#page-cases .reveal').forEach(el=>revObs.observe(el));},100);
+}
+function showPortfolio(){
+  document.getElementById('page-cases').style.display='none';
+  document.getElementById('page-portfolio').style.display='block';
+  window.scrollTo(0,0);
+}
+
+/* ── CASE STUDY SWITCH ── */
+const tocs={
+  gdoc:[{id:'g1',l:'01 · Overview'},{id:'g2',l:'02 · Research'},{id:'g3',l:'03 · Process'},{id:'g4',l:'04 · Prototype'},{id:'g5',l:'05 · Decisions'},{id:'g6',l:'06 · Outcomes'},{id:'g7',l:'07 · Reflection'}],
+  app: [{id:'a1',l:'01 · Overview'},{id:'a2',l:'02 · Research'},{id:'a3',l:'03 · Flows'},{id:'a4',l:'04 · Process'},{id:'a5',l:'05 · Prototype'},{id:'a6',l:'06 · Decisions'},{id:'a7',l:'07 · Outcomes'},{id:'a8',l:'08 · Reflection'}],
+  payment:[{id:'p1',l:'01 · Overview'},{id:'p2',l:'02 · Research'},{id:'p3',l:'03 · Flows'},{id:'p4',l:'04 · Process'},{id:'p5',l:'05 · Prototype'},{id:'p6',l:'06 · Trust Design'},{id:'p7',l:'07 · Decisions'},{id:'p8',l:'08 · Outcomes'},{id:'p9',l:'09 · Reflection'}],
+  trading:[{id:'t1',l:'01 · Overview'},{id:'t2',l:'02 · Research'},{id:'t3',l:'03 · Screens'},{id:'t4',l:'04 · Process'},{id:'t5',l:'05 · Prototype'},{id:'t6',l:'06 · Decisions'},{id:'t7',l:'07 · Outcomes'},{id:'t8',l:'08 · Reflection'}]
+};
+const figmaLinks={
+  gdoc:'https://www.figma.com/proto/t2hRFTkc3egL7vrvxReXhy/GDOC?node-id=170-6925&page-id=170%3A506&starting-point-node-id=170%3A7858&t=xhmzpv7cStGr5jIR-1',
+  app:'https://www.figma.com/proto/EmwgYgscwDC6JAPLzb3zZg/Mini_Mobile-App?node-id=665-5243&starting-point-node-id=533%3A13484&t=v0IG6WMroBq7bgYd-1',
+  payment:'https://www.figma.com/proto/XAFc9Wo9mxrwzRf7t27lfm/Tools_payment?node-id=6-8914&t=yGeR4O34ztjquJaw-1&scaling=min-zoom&content-scaling=fixed&page-id=4%3A2&starting-point-node-id=6%3A8914',
+  trading:'https://www.figma.com/proto/z3a1746joln40JYFKJ9Mon/UI-files-portfolio?node-id=7071-276&t=UbxBeAc8ZHm87rhz-1&scaling=min-zoom&content-scaling=fixed&page-id=6994%3A764&starting-point-node-id=7071%3A276&show-proto-sidebar=1'
+};
+const crumbs={gdoc:'GDOC',app:'Mini Mobile App',payment:'Tools Payment',trading:'Options Trading'};
+let curKey='gdoc';
+
+function switchCase(key){
+  if(key===curKey&&document.getElementById('csp-'+key).classList.contains('active')&&document.getElementById('page-cases').style.display==='flex')return;
+  curKey=key;
+  document.querySelectorAll('.cs-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('csp-'+key).classList.add('active');
+  document.querySelectorAll('.cs-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('cstab-'+key).classList.add('active');
+  document.getElementById('cscrumb').textContent=crumbs[key];
+  document.getElementById('csFigmaLink').href=figmaLinks[key];
+  buildTOC(key);
+  document.querySelector('.cs-main').scrollTop=0;
+  window.scrollTo(0,0);
+  setTimeout(()=>{document.querySelectorAll('#csp-'+key+' .reveal').forEach(el=>{el.classList.remove('visible');revObs.observe(el);});},60);
+  document.getElementById('csSidebar').classList.remove('open');
+}
+function buildTOC(key){
+  const c=document.getElementById('tocLinks');c.innerHTML='';
+  tocs[key].forEach(item=>{
+    const a=document.createElement('a');
+    a.href='#'+item.id;a.className='cs-toc-a';a.textContent=item.l;
+    a.addEventListener('click',e=>{e.preventDefault();const el=document.getElementById(item.id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});
+    c.appendChild(a);
+  });
+}
+window.addEventListener('scroll',()=>{
+  if(!tocs[curKey])return;
+  let active='';
+  tocs[curKey].forEach(item=>{const el=document.getElementById(item.id);if(el&&el.getBoundingClientRect().top<180)active=item.id;});
+  document.querySelectorAll('.cs-toc-a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+active));
+});
+
+function toggleSidebar(){document.getElementById('csSidebar').classList.toggle('open');}
+
+/* ── INIT ── */
+buildTOC('gdoc');
+</script>
+</body>
+</html>
